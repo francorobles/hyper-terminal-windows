@@ -72,7 +72,7 @@ $appearance = @{
     HideCaptionAlwaysFrame = '01'; ShowScrollbar = '00'; CenterConsolePad = '14'
     TryToCenter = '01'; FontSize = '12'; FontUseDpi = '01'; CursorTypeActive = '00023282'
     CursorTypeInactive = '00823283'; 'Update.CheckOnStartup' = '00'
-    StartTasksName = '{PowerShell}'; 'Multi.NewConfirm' = '00'
+    StartTasksName = '{WSL}'; 'Multi.NewConfirm' = '00'
 }
 foreach ($name in $appearance.Keys) { Set-Setting $settings $name $appearance[$name] }
 # Explicit window controls work even with the caption hidden.
@@ -109,7 +109,7 @@ $commands = [ordered]@{
     '{CMD}' = 'cmd.exe /d'
     '{PowerShell}' = 'powershell.exe -NoLogo'
     '{PowerShell 7}' = 'pwsh.exe -NoLogo'
-    '{WSL}' = 'wsl.exe --cd ~'
+    '{WSL}' = 'wsl.exe --distribution Ubuntu --cd ~'
 }
 $index = 0
 foreach ($command in $commands.GetEnumerator()) {

@@ -19,7 +19,11 @@ Assert ($settings.SelectSingleNode("value[@name='HideCaptionAlways']").data -eq 
 Assert ($settings.SelectSingleNode("value[@name='CenterConsolePad']").data -eq '14') 'Incorrect padding'
 Assert ($settings.SelectSingleNode("value[@name='CursorTypeActive']").data -eq '00023282') 'Incorrect cursor'
 Assert ($settings.SelectSingleNode("key[@name='Colors']/value[@name='Count']").data -eq '3') 'Palette count missing'
-Assert ($settings.SelectSingleNode("value[@name='StartTasksName']").data -eq '{PowerShell}') 'Incorrect default shell'
+Assert ($settings.SelectSingleNode("value[@name='StartTasksName']").data -eq '{WSL}') 'Incorrect default shell'
+$wslTask = $settings.SelectSingleNode("key[@name='Tasks']/key[value[@name='Name' and @data='{WSL}']]/value[@name='Cmd1']")
+Assert ($wslTask.data -eq 'wsl.exe --distribution Ubuntu --cd ~') 'WSL must target Ubuntu, not the machine default distribution'
+$launcher = Get-Content -LiteralPath "$BuildDirectory\HyperTerminal.cmd" -Raw
+Assert ($launcher.Contains('-Run wsl.exe --distribution Ubuntu --cd ~')) 'Launcher must open Ubuntu in the Linux home directory'
 $hotkeys = $settings.SelectSingleNode("key[@name='HotKeys']")
 Assert ($settings.SelectSingleNode("value[@name='MouseDragWindow']").data -eq '01') 'Window drag disabled'
 Assert ($hotkeys.SelectSingleNode("value[@name='WndDragKey']").data -eq '00121101') 'Incorrect drag binding'
