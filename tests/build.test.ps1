@@ -24,6 +24,12 @@ $wslTask = $settings.SelectSingleNode("key[@name='Tasks']/key[value[@name='Name'
 Assert ($wslTask.data -eq 'wsl.exe --distribution Ubuntu --cd ~') 'WSL must target Ubuntu, not the machine default distribution'
 $launcher = Get-Content -LiteralPath "$BuildDirectory\HyperTerminal.cmd" -Raw
 Assert ($launcher.Contains('-Run wsl.exe --distribution Ubuntu --cd ~')) 'Launcher must open Ubuntu in the Linux home directory'
+foreach ($name in @('FadeInactive', 'AlphaValueSeparate')) {
+    Assert ($settings.SelectSingleNode("value[@name='$name']").data -eq '00') 'Inactive appearance must remain stable'
+}
+foreach ($name in @('AlphaValue', 'AlphaValueInactive')) {
+    Assert ($settings.SelectSingleNode("value[@name='$name']").data -eq 'ff') 'Terminal must be opaque'
+}
 $hotkeys = $settings.SelectSingleNode("key[@name='HotKeys']")
 Assert ($settings.SelectSingleNode("value[@name='MouseDragWindow']").data -eq '01') 'Window drag disabled'
 Assert ($hotkeys.SelectSingleNode("value[@name='WndDragKey']").data -eq '00121101') 'Incorrect drag binding'

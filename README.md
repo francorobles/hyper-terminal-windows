@@ -1,6 +1,6 @@
 # Hyper Terminal for Windows
 
-A minimal native Windows terminal styled after Omarchy's Foot: dark Tokyo Night colors, 14-pixel padding, a steady block cursor, and a terminal-only window. No visible tabs, toolbar, status bar, scrollbar, or title bar.
+A minimal native Windows terminal styled after Omarchy's Foot: dark Tokyo Night colors, 14-pixel padding, a steady block cursor, and a terminal-only window. No visible tabs, toolbar, status bar, scrollbar, or title bar. The window stays fully opaque with unchanged colors when unfocused.
 
 This is a configured ConEmu engine, not a port of Foot or a new terminal renderer. Foot runs on Wayland; Windows rendering and window borders will differ. The output contains no Cmder launcher, Clink, Git, or bundled shell customization tools. No Electron, Node.js, Visual Studio, or compilation is required.
 

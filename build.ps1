@@ -68,6 +68,7 @@ Set-Setting $settings 'Multi.CloseConfirmFlags' '07'
 Set-Setting $settings 'ClipboardConfirmEnter' '01'
 # Foot-style presentation with a narrow native resize edge.
 $appearance = @{
+    FadeInactive = '00'; AlphaValue = 'ff'; AlphaValueInactive = 'ff'; AlphaValueSeparate = '00'
     Tabs = '00'; 'StatusBar.Show' = '00'; HideCaption = '01'; HideCaptionAlways = '01'
     HideCaptionAlwaysFrame = '01'; ShowScrollbar = '00'; CenterConsolePad = '14'
     TryToCenter = '01'; FontSize = '12'; FontUseDpi = '01'; CursorTypeActive = '00023282'
