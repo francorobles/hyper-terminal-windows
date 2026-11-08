@@ -1,6 +1,6 @@
 # Hyper Terminal for Windows
 
-A minimal native Windows terminal styled after Omarchy's Foot: dark Tokyo Night colors, 14-pixel padding, a steady block cursor, and a terminal-only window. No visible tabs, toolbar, status bar, scrollbar, or title bar. The window stays fully opaque with unchanged colors when unfocused.
+A minimal native Windows terminal with a Kali-inspired appearance: charcoal colors, blue/cyan accents, 14-pixel padding, a steady block cursor, and a terminal-only window. No visible tabs, toolbar, status bar, scrollbar, or title bar. The window stays fully opaque with unchanged colors when unfocused.
 
 This is a configured ConEmu engine, not a port of Foot or a new terminal renderer. Foot runs on Wayland; Windows rendering and window borders will differ. The output contains no Cmder launcher, Clink, Git, or bundled shell customization tools. No Electron, Node.js, Visual Studio, or compilation is required.
 
@@ -49,7 +49,7 @@ Existing output folders are never overwritten. To rebuild without losing portabl
 
 ## Appearance and controls
 
-Ubuntu on WSL opens in your Linux home directory using its default shell (Bash on a fresh Ubuntu install). Your Linux shell profile applies. The font is JetBrainsMono Nerd Font if installed, then JetBrains Mono, Cascadia Mono, or Consolas. No fonts are installed automatically. Tokyo Night is the default; Jade and Gruvbox are also available in the configuration.
+Ubuntu on WSL opens in your Linux home directory using its default shell (Bash on a fresh Ubuntu install). Your Linux shell profile applies. The font is JetBrainsMono Nerd Font if installed, then JetBrains Mono, Cascadia Mono, or Consolas. No fonts are installed automatically. Kali Dark is the default; Tokyo Night, Jade, and Gruvbox are also available in the configuration.
 
 - Close with **Alt+F4**, or type `exit`.
 - Move: hold **Ctrl+Alt** and drag anywhere inside the terminal with the left mouse button.
@@ -62,6 +62,23 @@ Ubuntu on WSL opens in your Linux home directory using its default shell (Bash o
 The terminal engine still supports advanced settings and tasks, but they have no persistent on-screen controls. Preferences are stored in `config/ConEmu.xml`; edit only while the app is closed. Tasks include CMD, PowerShell, PowerShell 7 (requires `pwsh` on PATH), and WSL (Ubuntu, the default task). Close and multi-line paste confirmations remain enabled.
 
 The narrow native resize edge is retained. Omarchy's compositor borders, window tiling, Linux shell prompt, and exact font rendering are not reproduced by this Windows configuration.
+
+### Kali-style prompt
+
+The color scheme is Kali-inspired, not an exact Kali desktop theme. The terminal retains its minimal borderless window and still runs Ubuntu/Bash.
+
+The current Ubuntu user has the two-line prompt installed in `~/.config/hyper-terminal/kali-prompt.bash`, sourced at the end of `~/.bashrc`. Run `source ~/.bashrc` to apply it to an existing shell; reopen the terminal for the updated window palette. The Git alias and readable directory colors are preserved.
+
+For a fresh Ubuntu account, from this repository in WSL:
+
+```bash
+mkdir -p ~/.config/hyper-terminal
+cp config/kali-prompt.bash ~/.config/hyper-terminal/
+echo '[ ! -f "$HOME/.config/hyper-terminal/kali-prompt.bash" ] || . "$HOME/.config/hyper-terminal/kali-prompt.bash"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+Run that setup once. To remove the prompt, delete its source line from `~/.bashrc`. The portable package also includes `config/kali-prompt.bash`. Building does not modify Linux user settings automatically.
 
 ## Architecture and distribution
 

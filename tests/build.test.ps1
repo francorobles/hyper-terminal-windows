@@ -2,12 +2,12 @@ param([string]$BuildDirectory = "$PSScriptRoot\..\dist\HyperTerminal-Foot")
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 function Assert($condition, $message) { if (!$condition) { throw $message } }
-foreach ($file in @('HyperTerminal.cmd', 'engine\ConEmu64.exe', 'engine\ConEmu\ConEmuC64.exe', 'engine\ConEmu\ConEmuCD64.dll', 'engine\ConEmu\License.txt')) {
+foreach ($file in @('config\kali-prompt.bash', 'HyperTerminal.cmd', 'engine\ConEmu64.exe', 'engine\ConEmu\ConEmuC64.exe', 'engine\ConEmu\ConEmuCD64.dll', 'engine\ConEmu\License.txt')) {
     Assert (Test-Path -LiteralPath "$BuildDirectory\$file") "Missing $file"
 }
 [xml]$xml = Get-Content -LiteralPath "$BuildDirectory\config\ConEmu.xml"
 $settings = $xml.SelectSingleNode('/key/key/key')
-Assert ($settings.SelectSingleNode("value[@name='ColorTable00']").data -eq '00261b1a') 'Tokyo Night RGB conversion failed'
+Assert ($settings.SelectSingleNode("value[@name='ColorTable00']").data -eq '0029221f') 'Kali Dark RGB conversion failed'
 Assert ($settings.SelectSingleNode("value[@name='ClipboardConfirmEnter']").data -eq '01') 'Paste confirmation disabled'
 Assert ($settings.SelectSingleNode("value[@name='Multi.CloseConfirmFlags']").data -eq '07') 'Close confirmation disabled'
 Assert (!(Test-Path "$BuildDirectory\Cmder.exe")) 'Cmder must not be bundled'
@@ -18,7 +18,7 @@ foreach ($name in @('Tabs', 'StatusBar.Show', 'ShowScrollbar')) {
 Assert ($settings.SelectSingleNode("value[@name='HideCaptionAlways']").data -eq '01') 'Caption visible'
 Assert ($settings.SelectSingleNode("value[@name='CenterConsolePad']").data -eq '14') 'Incorrect padding'
 Assert ($settings.SelectSingleNode("value[@name='CursorTypeActive']").data -eq '00023282') 'Incorrect cursor'
-Assert ($settings.SelectSingleNode("key[@name='Colors']/value[@name='Count']").data -eq '3') 'Palette count missing'
+Assert ($settings.SelectSingleNode("key[@name='Colors']/value[@name='Count']").data -eq '4') 'Palette count missing'
 Assert ($settings.SelectSingleNode("value[@name='StartTasksName']").data -eq '{WSL}') 'Incorrect default shell'
 $wslTask = $settings.SelectSingleNode("key[@name='Tasks']/key[value[@name='Name' and @data='{WSL}']]/value[@name='Cmd1']")
 Assert ($wslTask.data -eq 'wsl.exe --distribution Ubuntu --cd ~') 'WSL must target Ubuntu, not the machine default distribution'
@@ -44,7 +44,7 @@ foreach ($binding in @(
     Assert ($hotkeys.SelectSingleNode("value[@name='$($binding[0]).Text']").data -eq $binding[2]) 'Incorrect window action'
 }
 $palettes = $settings.SelectNodes("key[@name='Colors']/key")
-Assert ($palettes.Count -eq 3) 'Expected three palettes'
+Assert ($palettes.Count -eq 4) 'Expected four palettes'
 foreach ($palette in $palettes) {
     Assert ($palette.SelectNodes("value[starts-with(@name,'ColorTable')]").Count -eq 32) 'Incomplete palette'
 }

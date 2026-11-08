@@ -34,6 +34,7 @@ function Set-Setting($node, $name, $data) {
     $node.SelectSingleNode("value[@name='$name']").SetAttribute('data', $data)
 }
 $themes = [ordered]@{
+    'Kali Dark' = '1f2229 277fff 5af78e 57c7ff ff5c57 ff6ac1 f3f99d d6d6d6 686868 57a6ff 5af78e 9aedfe ff5c57 ff6ac1 f3f99d f1f1f0'
     Jade = '161b1b 7fbbb3 a7c080 83c092 e67e80 d699b6 dbbc7f c5c9c5 7a8478 91cdc5 b8d090 95d2a4 f19797 e8abc8 edce91 e5d8bc'
     'Tokyo Night' = '1a1b26 7aa2f7 9ece6a 7dcfff f7768e bb9af7 e0af68 c0caf5 565f89 7aa2f7 9ece6a 7dcfff f7768e bb9af7 e0af68 c0caf5'
     Gruvbox = '282828 458588 98971a 689d6a cc241d b16286 d79921 ebdbb2 928374 83a598 b8bb26 8ec07c fb4934 d3869b fabd2f ebdbb2'
@@ -41,7 +42,7 @@ $themes = [ordered]@{
 $colors = $settings.SelectSingleNode("key[@name='Colors']")
 $template = $colors.SelectSingleNode('key').CloneNode($true)
 $paletteCount = $colors.SelectSingleNode("value[@name='Count']").CloneNode($true)
-$paletteCount.SetAttribute('data', '3')
+$paletteCount.SetAttribute('data', [string]$themes.Count)
 $colors.RemoveAll()
 $colors.SetAttribute('name', 'Colors')
 $null = $colors.AppendChild($paletteCount)
@@ -55,7 +56,7 @@ foreach ($theme in $themes.GetEnumerator()) {
         $hex = $rgb[$i % 16]
         $bgr = '00' + $hex.Substring(4,2) + $hex.Substring(2,2) + $hex.Substring(0,2)
         Set-Setting $palette ('ColorTable{0:00}' -f $i) $bgr
-        if ($theme.Key -eq 'Tokyo Night') { Set-Setting $settings ('ColorTable{0:00}' -f $i) $bgr }
+        if ($theme.Key -eq 'Kali Dark') { Set-Setting $settings ('ColorTable{0:00}' -f $i) $bgr }
     }
     Set-Setting $palette 'TextColorIdx' '07'
     Set-Setting $palette 'BackColorIdx' '00'
@@ -122,5 +123,6 @@ foreach ($command in $commands.GetEnumerator()) {
     $null = $tasks.AppendChild($task)
 }
 $config.Save((Join-Path ([IO.Path]::GetFullPath($OutputDirectory)) 'config\ConEmu.xml'))
+Copy-Item -LiteralPath "$PSScriptRoot\config\kali-prompt.bash" -Destination "$OutputDirectory\config"
 Copy-Item -LiteralPath "$PSScriptRoot\HyperTerminal.cmd", "$PSScriptRoot\README.md" -Destination $OutputDirectory
 Write-Host "Built $OutputDirectory. Launch HyperTerminal.cmd."
